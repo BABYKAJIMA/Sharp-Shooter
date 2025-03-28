@@ -2,7 +2,8 @@ using StarterAssets;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
-{   
+{
+    [SerializeField] int damgeAmount = 1;
     StarterAssetsInputs starterAssetsInputs;
 
     private void Awake()
@@ -11,14 +12,20 @@ public class Weapon : MonoBehaviour
     }
     void Update()
     {
-        if (starterAssetsInputs.shoot)
+        if (!starterAssetsInputs.shoot) return;
         {
             RaycastHit hit;
 
             if( Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity))
             {
-               Debug.Log(hit.collider.name);
-                starterAssetsInputs.ShootInput(false);
+                EnemyHealth enemyHealth = hit.collider.GetComponent<EnemyHealth>();
+                enemyHealth?.TakeDamge(damgeAmount);
+                //if (enemyHealth)
+                //{
+                //    enemyHealth.TakeDamge(damgeAmount);
+                //}
+                    
+               starterAssetsInputs.ShootInput(false); 
             }
         }     
     }
